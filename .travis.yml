@@ -26,6 +26,12 @@ env:
 script:
   - make test
   - docker --version
+  - docker login --username=ajv21 -p=Jun21@2021
+  - docker buildx create --name samplekit
+  - docker buildx use samplkit
+  - docker buildx inspect --bootstrap
+  - docker buildx build -t ajv21/frontend:buildx_arm64x64 --platform linux/amd64,linux/arm64 --push .
+  - docker buildx rm samplekit
 
 after_success:
   - set -e
