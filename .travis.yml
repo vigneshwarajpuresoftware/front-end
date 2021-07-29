@@ -10,7 +10,6 @@ services:
 
 before_install:
   - sudo apt-get install -y make
-  - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
   - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   - sudo apt-get update
@@ -25,12 +24,11 @@ env:
 
 script:
   - make test
-  - docker --version
-  - docker login --username=ajv21 -p=Jun21@2021
+  - docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
   - docker buildx create --name samplekit
   - docker buildx use samplekit
   - docker buildx inspect --bootstrap
-  - docker buildx build -t ajv21/frontend:buildx_arm64x64 --platform linux/amd64,linux/arm64 --push .
+  - docker buildx build -t odidev/frontend:buildx_arm64x64 --platform linux/amd64,linux/arm64 --push .
   - docker buildx rm samplekit
 
 after_success:
