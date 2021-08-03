@@ -25,6 +25,6 @@ echo $CODE_DIR
 
 REPO=${GROUP}/$(basename front-end);
 
-$DOCKER_CMD build -t ${REPO}:${COMMIT} .
+$DOCKER_CMD buildx build -t ${REPO}:${COMMIT} --platfrom linux,arm64,linux.amd64 --push .
 echo $REPO
 echo $COMMIT
