@@ -26,11 +26,11 @@ echo $CODE_DIR
 REPO=${GROUP}/$(basename front-end);
 $DOCKER_CMD run --rm --privileged multiarch/qemu-user-static --reset -p yes
 $DOCKER_CMD --version
-$DOCKER_CMD login --username=ajv21 -p=Jun21@2021
+$DOCKER_CMD login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
 $DOCKER_CMD buildx create --name frontendbuildkit
 $DOCKER_CMD buildx use frontendbuildkit
 $DOCKER_CMD buildx inspect --bootstrap
-$DOCKER_CMD buildx build -t ajv21/frontend:shellscript --platform linux/arm64,linux/amd64 --push .
+$DOCKER_CMD buildx build -t odidev/frontend:shellscript --platform linux/arm64,linux/amd64 --push .
 $DOCKER_CMD buildx rm frontendbuildkit
 $DOCKER_CMD logout
 echo $REPO
