@@ -25,12 +25,6 @@ env:
 
 script:
   - make test
-  - docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
-  - docker buildx create --name samplekit
-  - docker buildx use samplekit
-  - docker buildx inspect --bootstrap
-  - docker buildx build -t ajv21/frontend:arm64x64_testing --platform linux/amd64,linux/arm64 --push .
-  - docker buildx rm samplekit
 
 after_success:
   - ./scripts/build.sh
