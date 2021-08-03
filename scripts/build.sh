@@ -26,3 +26,5 @@ echo $CODE_DIR
 REPO=${GROUP}/$(basename front-end);
 
 $DOCKER_CMD build -t ${REPO}:${COMMIT} .
+echo $REPO
+echo $COMMIT
