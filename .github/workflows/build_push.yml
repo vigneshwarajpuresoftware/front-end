@@ -1,0 +1,57 @@
+name: ci
+
+on:
+  push:
+    branches:
+    - "*"  # run for branches
+    tags:
+    - "*"  # run for tags
+  pull_request:
+    branches:
+    - "*"  # run for branches
+    tags:
+    - "*"  # run for tags
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      GROUP: weaveworksdemos 
+      COMMIT: ${{ github.sha }}
+      REPO: front-end
+    steps:
+    - uses: actions/checkout@v2
+
+    #
+    #
+    # Set up  node
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '4.x'
+
+    #
+    #
+    # Install dependencies
+    - run: npm install
+
+    #
+    #
+    # Run node tests in docker image
+    - name: Test image
+      env:
+        DOCKER_BUILDKIT: 1
+      run: make test
+
+    #
+    #
+    # Build docker image for service
+    - name: build and publish image
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./Dockerfile
+        platforms: linux/amd64,linux/arm64
+        push: true
+        tags: |
+           ${{ secrets.DOCKER_USERNAME }}/mailhog:latest
